@@ -8,7 +8,7 @@ const ServerIdLayout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ serverId: string }>; // ← Changed to Promise
+  params: Promise<{ serverId: string }>;
 }) => {
   const profile = await currentProfile();
 
@@ -16,7 +16,6 @@ const ServerIdLayout = async ({
     return redirect("/sign-in");
   }
 
-  // Await params before accessing serverId
   const { serverId } = await params;
 
   const server = await db.server.findUnique({
