@@ -52,10 +52,10 @@ const formSchema = z.object({
 });
 
 export function CreateChannelModal() {
-  const { isOpen, onClose, type: modalType, data } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
-  const isModalOpen = isOpen && modalType === "createChannel";
+  const isModalOpen = isOpen && type === "createChannel";
   const { server } = (data || {}) as { server?: ServerWithMembersWithProfile };
 
   const form = useForm<z.infer<typeof formSchema>>({
