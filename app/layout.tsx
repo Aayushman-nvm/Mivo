@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/providers/themeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/components/providers/modalProvider";
+import { SocketProvider } from "@/components/providers/socketProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={cn(`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-[#313338]`)}
+          className={cn(
+            `${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-[#313338]`
+          )}
         >
           <ThemeProvider
             attribute="class"
@@ -41,8 +44,10 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="discord-theme"
           >
-            <ModalProvider />
-            {children}
+            <SocketProvider>
+              <ModalProvider />
+              {children}
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>
