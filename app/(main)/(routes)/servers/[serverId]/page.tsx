@@ -1,9 +1,52 @@
-import React from 'react'
+import { currentProfile } from "@/lib/currentProfile";
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
-function ServerIdPage() {
-  return (
-    <div>ServerIdPage</div>
-  )
+interface ServerIdPageProps {
+  params: {
+    serverId: string;
+  };
 }
 
-export default ServerIdPage
+const ServerIdPage = async ({
+  params,
+}: {
+  params: Promise<{ serverId: string }>;
+}) => {
+  const { serverId } = await params;
+  const profile = await currentProfile();
+  if (!profile) {
+    redirect("/sign-in");
+  }
+
+  const server = await db.server.findFirst({
+    where: {
+      id: serverId,
+      members: {
+        some: {
+          profileId: profile.id,
+        },
+      },
+    },
+    include: {
+      channels: {
+        where: {
+          name: "general",
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
+    },
+  });
+
+  const initialChannel = server?.channels[0];
+
+  if (initialChannel?.name !== "general") {
+    return null;
+  }
+
+  return redirect(`/servers/${serverId}/channels/${initialChannel?.id}`);
+};
+
+export default ServerIdPage;
