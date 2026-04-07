@@ -36,14 +36,14 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const { serverId, channelId } = query;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(
-        `${apiUrl}?serverId=${serverId}&channelId=${channelId}`,
-        values
-      );
+      const url = new URL(apiUrl, window.location.origin);
+      Object.entries(query).forEach(([key, value]) => {
+        url.searchParams.append(key, value);
+      });
+
+      await axios.post(url.toString(), values);
       form.reset();
       router.refresh();
     } catch (error) {
