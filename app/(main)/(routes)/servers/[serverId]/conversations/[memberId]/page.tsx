@@ -22,7 +22,7 @@ const MemberIdPage = async ({
   searchParams,
 }: {
   params: Promise<MemberIdPageProps>;
-  searchParams: searchParamsProps;
+  searchParams: Promise<searchParamsProps>;
 }) => {
   const profile = await currentProfile();
   const { serverId, memberId } = await params;
@@ -58,7 +58,8 @@ const MemberIdPage = async ({
 
   const otherMember = memberOne.id === currentMember.id ? memberTwo : memberOne;
 
-  const isVideo = searchParams.video === "true";
+  const resolvedSearchParams = await searchParams;
+  const isVideo = resolvedSearchParams.video === "true";
 
   return (
     <div className="h-full flex flex-col">
