@@ -83,7 +83,7 @@ async function ServerSidebar({ serverId }: ServerSidebarProps) {
   )?.role;
 
   return (
-    <div className="flex flex-col h-full text-primary w-56 md:w-64 lg:w-72 bg-[#F2F3F5] dark:bg-[#2B2D31]">
+    <div className="flex flex-col h-full text-primary w-60 md:w-64 lg:w-72 bg-[#F2F3F5] dark:bg-[#2B2D31]">
       <ServerHeader server={server} role={role} />
 
       <ScrollArea className="flex-1 px-3">
@@ -139,6 +139,7 @@ async function ServerSidebar({ serverId }: ServerSidebarProps) {
               channelType={ChannelType.TEXT}
               role={role}
               label="Text Channels"
+              server={server}
             />
             <div className="space-y-0.5">
               {textChannels.map((channel) => (
@@ -160,6 +161,7 @@ async function ServerSidebar({ serverId }: ServerSidebarProps) {
               channelType={ChannelType.AUDIO}
               role={role}
               label="Voice Channels"
+              server={server}
             />
             <div className="space-y-0.5">
               {audioChannels.map((channel) => (
@@ -181,6 +183,7 @@ async function ServerSidebar({ serverId }: ServerSidebarProps) {
               channelType={ChannelType.VIDEO}
               role={role}
               label="Video Channels"
+              server={server}
             />
             <div className="space-y-0.5">
               {videoChannels.map((channel) => (
