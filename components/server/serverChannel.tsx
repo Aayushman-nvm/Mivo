@@ -5,7 +5,8 @@ import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ActionTooltip } from "@/components/actionTooltip";
-import { useModal } from "@/hooks/useModalStore";
+import { ModalType, useModal } from "@/hooks/useModalStore";
+import React from "react";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -34,6 +35,11 @@ export const ServerChannel = ({
     router.push(`/servers/${server.id}/channels/${channel.id}`);
   };
 
+  const onAction = (e: React.MouseEvent, action: ModalType) => {
+    e.stopPropagation();
+    onOpen(action, { channel, server });
+  };
+
   return (
     <button
       onClick={onClick}
@@ -58,7 +64,7 @@ export const ServerChannel = ({
             <Edit
               onClick={(e) => {
                 e.stopPropagation();
-                onOpen("editChannel", { server, channel });
+                onAction(e, "editChannel");
                 console.log("Edit channel");
               }}
               className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
@@ -68,7 +74,7 @@ export const ServerChannel = ({
             <Trash
               onClick={(e) => {
                 e.stopPropagation();
-                onOpen("deleteChannel", { server, channel });
+                onAction(e, "deleteChannel");
                 console.log("Delete channel");
               }}
               className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
