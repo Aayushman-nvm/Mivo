@@ -35,8 +35,8 @@ function ServerHeader({ server, role }: ServerHeaderProps) {
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none" asChild>
         <button className="w-full text-base md:text-md font-semibold px-3 flex items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2 hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition">
-          <span className="flex-1 text-left truncate">{server.name}</span>
-          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 ml-auto shrink-0" />
+          <span className="flex md:flex-1 text-left truncate">{server.name} <ChevronDown className="h-4 w-4 ml-2 mt-1.5 md:hidden" /></span>
+          <ChevronDown className="hidden md:block md:h-5 md:w-5 ml-auto shrink-0" />
         </button>
       </DropdownMenuTrigger>
 
