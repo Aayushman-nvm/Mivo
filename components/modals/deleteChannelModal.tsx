@@ -66,7 +66,7 @@ export function DeleteChannelModal() {
         <div className="p-4 sm:p-6 pt-0 space-y-4">
           {/* Warning Banner */}
           <div className="flex items-center gap-3 bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/20 rounded-md p-3 sm:p-4">
-            <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-rose-500 flex-shrink-0" />
+            <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-rose-500 shrink-0" />
             <p className="text-xs sm:text-sm text-rose-600 dark:text-rose-400 font-medium">
               Warning: This will permanently delete all channel data
             </p>
