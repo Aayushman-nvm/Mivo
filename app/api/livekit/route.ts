@@ -12,10 +12,21 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const apiKey = process.env.LIVEKIT_API_KEY;
+  const apiSecret = process.env.LIVEKIT_API_SECRET;
+  const wsUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL;
+
+  if (!apiKey || !apiSecret || !wsUrl) {
+    return NextResponse.json(
+      { error: "Server misconfigured" },
+      { status: 500 },
+    );
+  }
+
   // Create an access token
   const at = new AccessToken(
-    process.env.LIVEKIT_API_KEY,
-    process.env.LIVEKIT_API_SECRET,
+    apiKey,
+    apiSecret,
     {
       identity: identity,
       ttl: "10m", // Token expires in 10 minutes
@@ -30,7 +41,7 @@ export async function GET(req: NextRequest) {
   });
 
   const token = await at.toJwt();
-  const livekitUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL;
+  const livekitUrl = wsUrl;
 
   return NextResponse.json({ token, serverUrl: livekitUrl });
 }
