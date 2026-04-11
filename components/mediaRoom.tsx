@@ -16,24 +16,52 @@ interface MediaRoomProps {
 const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
   const { user } = useUser();
   const [token, setToken] = useState("");
-
+  const [error, setError] = useState<string | null>(null);
+  
   useEffect(() => {
-    if (!user?.firstName || !user?.lastName) return;
+    if (!user?.firstName) return;
 
-    const name = `${user.firstName} ${user.lastName}`;
+    const name = `${user.firstName} ${user.lastName || ""}`.trim();
 
     (async () => {
       try {
         const resp = await fetch(
-          `/api/livekit?room=${chatId}&username=${name}`,
+          `/api/livekit?room=${chatId}&identity=${name}`,
         );
+
+        if (!resp.ok) {
+          const errorText = await resp.text();
+          console.error("LiveKit token fetch failed:", resp.status, errorText);
+          setError(`Failed to connect: ${resp.status}`);
+          return;
+        }
+
         const data = await resp.json();
+
+        if (!data.token) {
+          console.error("No token in response:", data);
+          setError("No token received from server");
+          return;
+        }
+
         setToken(data.token);
       } catch (error) {
-        console.log(error);
+        console.error("LiveKit error:", error);
+        setError("Connection failed");
       }
     })();
   }, [user?.firstName, user?.lastName, chatId]);
+
+  if (error) {
+    return (
+      <div className="flex flex-col flex-1 justify-center items-center">
+        <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
+          Check console for details
+        </p>
+      </div>
+    );
+  }
 
   if (token === "") {
     return (
